@@ -1,0 +1,39 @@
+.gr{
+    display: grid;
+    grid-template-columns: repeat(7, 110px);
+    grid-template-rows: repeat(6, 110px);
+    width: 800px;
+    height: 670px;
+    margin: 0 auto;
+    justify-content: center;
+    background-color: black;
+}
+
+.grTop{
+    display: grid;
+    grid-template-columns: repeat(7, 110px);
+    grid-template-rows: repeat(1, 110px);
+    width: 800px;
+    height: 110px;
+    margin: 20px auto;
+    justify-content: center;
+    /* background-color: grey; */
+}
+
+.cellTop{
+    border:5px solid white;
+    background-color: white;
+    border-radius: 50%;
+    outline:  5px solid white;
+}
+
+.cell{
+    border:5px solid black;
+    background-color: white;
+    border-radius: 50%;
+    outline:  5px solid black;
+}
+
+.cellTop:hover{
+    background-color: rgb(75, 204, 255) ;
+}
