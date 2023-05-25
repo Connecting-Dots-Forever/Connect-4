@@ -20,10 +20,6 @@ function Game() {
   )
 
   const bgOnTop = (e) => {
-    // e.target.style.background = 'red';
-    // console.log(e.target.id.charAt(2), "on");
-    // console.log(hoverTop);
-
     const col = e.target.id.charAt(2);
     let newTop = [0,0,0,0,0,0,0];
     newTop[parseInt(col)] = 1;
@@ -44,7 +40,7 @@ function Game() {
 
         <div className={`${styles.grTop} mb-4`}>
           {hoverTop.map((col, i) => (
-            <div className={styles.cellTop}
+            <div className= {`border-4 border-white rounded-full`}
               key={i}
               style={{ "backgroundColor": (hoverTop[i]) ? ((turn === 1) ? "red" : "yellow") : "white" }}
               onMouseOver={bgOnTop}
@@ -60,7 +56,7 @@ function Game() {
             return (
 
               row.map((cell, y) => {
-                return (<div className={styles.cell}
+                return (<div className= {`border-4 border-black rounded-full`}
                   style={{ "backgroundColor": (ds[x][y]) ? ((ds[x][y] === 1) ? "red" : "yellow") : "white" }}
                   onMouseOver={bgOnTop}
                   onClick={placeDisk}

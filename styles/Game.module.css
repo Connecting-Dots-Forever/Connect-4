@@ -12,19 +12,3 @@
     justify-content: center;
     /* background-color: grey; */
 }
-
-.cellTop{
-    border:5px solid white;
-    border-radius: 50%;
-    outline:  5px solid white;
-}
-
-.cell{
-    border:5px solid black;
-    border-radius: 50%;
-    outline:  5px solid black;
-}
-/* 
-.cellTop:hover{
-    background-color: rgb(75, 204, 255) ;
-} */
