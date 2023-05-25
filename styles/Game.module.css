@@ -10,5 +10,4 @@
     grid-template-columns: repeat(7, 70px);
     grid-template-rows: repeat(1, 70px);
     justify-content: center;
-    /* background-color: grey; */
 }
