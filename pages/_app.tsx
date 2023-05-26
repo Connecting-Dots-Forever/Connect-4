@@ -23,7 +23,7 @@ const App = ({ Component, pageProps }: AppProps) => {
 			{/* <Tailwindbreakpoints /> */}
 
 			<Head>
-				<title>Default Title</title>
+				<title>Connect 4</title>
 				<link rel="icon" href="/logo.svg" />
 
 				{/* meta tags */}

@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 
 const Home = () => {
 	return (
@@ -6,8 +7,13 @@ const Home = () => {
 			<Head>
 				<title>Home Page</title>
 			</Head>
+			<div className="container mt-5">
+				<Link href="/game">
+					<a className="text-xl font-semibold">Game</a>
+				</Link>
+			</div>
 
-			<h1 className="text-3xl text-center py-2 font-semibold ">
+			<h1 className="text-3xl text-center mt-6 py-5 font-semibold ">
 				This is Heading
 			</h1>
 			<div>
