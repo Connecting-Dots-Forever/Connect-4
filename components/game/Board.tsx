@@ -1,11 +1,12 @@
 import { useState } from "react";
 
-import styles from "styles/Game.module.css";
+// import styles from "styles/Game.module.css";
 import Coin from "./Coin";
+import Triangle from "./Triangle";
 
-function Board() {
+export default function BoardView() {
 	const [turn, setTurn] = useState(1); //1-for player 1, 2 for player 2
-	const [ds, setDs] = useState([
+	const [board, setBoard] = useState([
 		[0, 0, 0, 0, 0, 0, 0],
 		[0, 0, 0, 0, 0, 0, 0],
 		[0, 0, 0, 0, 0, 0, 0],
@@ -18,48 +19,91 @@ function Board() {
 
 	const bgOnTop = (col_num: number) => {
 		let newTop = [0, 0, 0, 0, 0, 0, 0];
-		newTop[col_num] = 1;
+		newTop[col_num] = turn;
 		setHoverTop(newTop);
 	};
 
 	const placeCoin = (col_num: number) => {
-		// console.log(parseInt(e.target.id.charAt(2)), "place");
-
 		let i;
-		for (i = 0; i < ds.length; i++) {
-			if (ds[i][col_num] !== 0) break;
+		for (i = 0; i < board.length; i++) {
+			if (board[i][col_num] !== 0) break;
 		}
 
 		if (i > 0) {
-			ds[--i][col_num] = turn;
+			board[--i][col_num] = turn;
 			setTurn((prevTurn) => (prevTurn === 1 ? 2 : 1));
 		}
 	};
 
 	return (
 		<div className="flex justify-center items-end">
-			<div className="mt-5">
-				<div className={`${styles.grTop} mb-4`}>
-					{hoverTop.map((col, i) => (
+			<div>
+				{/* current turn */}
+				<div className="flex my-10">
+					<div className="text-xl my-auto mr-5">
+						{/* Current turn: Player -{">"} {turn} */}
+						Current :
+					</div>
+					<span
+						className={"grid"}
+						style={{
+							gridTemplateRows: "repeat(1, 40px)",
+							gridTemplateColumns: "repeat(1, 40px)",
+						}}
+					>
 						<Coin
-							key={`in-${i}`}
-							cell={col}
+							turn={turn}
+							type={"out-side"}
+							onMouseOver={function () {}}
+							onClick={function () {}}
+						/>
+					</span>
+				</div>
+
+				{/* upper coin to place in board */}
+				{/* not working properly : color not getting updated */}
+				{/* that's y using triangle */}
+				<div
+					className={"grid justify-center mb-4"}
+					style={{
+						gridTemplateRows: "repeat(1, 70px)",
+						gridTemplateColumns: "repeat(7, 70px)",
+					}}
+				>
+					{hoverTop.map((col_val, index) => (
+						// <Coin
+						// 	key={`in-${index}`}
+						// 	turn={col_val}
+						// 	type="out-side"
+						// 	onMouseOver={() => bgOnTop(index)}
+						// 	onClick={() => placeCoin(index)}
+						// />
+						<Triangle
+							key={index}
+							turn={col_val}
 							type="out-side"
-							onMouseOver={() => bgOnTop(i)}
-							onClick={() => placeCoin(i)}
+							onMouseOver={() => bgOnTop(index)}
+							onClick={() => placeCoin(index)}
 						/>
 					))}
 				</div>
 
-				<div className={`${styles.gr} bg-black p-2`}>
-					{ds.map((row, x) =>
-						row.map((cell, y) => (
+				{/* board to play game */}
+				<div
+					className={"grid justify-center bg-black p-2"}
+					style={{
+						gridTemplateRows: "repeat(6, 70px)",
+						gridTemplateColumns: "repeat(7, 70px)",
+					}}
+				>
+					{board.map((row, x_index) =>
+						row.map((cell_value, y_index) => (
 							<Coin
-								key={`in-${x}-${y}`}
-								cell={cell}
+								key={`in-${x_index}-${y_index}`}
+								turn={cell_value}
 								type="in-side"
-								onMouseOver={() => bgOnTop(y)}
-								onClick={() => placeCoin(y)}
+								onMouseOver={() => bgOnTop(y_index)}
+								onClick={() => placeCoin(y_index)}
 							/>
 						))
 					)}
@@ -68,5 +112,3 @@ function Board() {
 		</div>
 	);
 }
-
-export default Board;

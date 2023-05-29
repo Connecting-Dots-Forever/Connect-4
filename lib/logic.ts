@@ -5,7 +5,7 @@ type blank_type = ".";
 
 let blank = ".";
 
-export class Board {
+class Board {
 	protected row = 6;
 	protected col = 7;
 	protected dots = 4;
@@ -192,3 +192,5 @@ export class Board {
 // obj.is_winning(4);
 // obj.is_winning(2);
 // obj.is_winning(6);
+
+export default Board;

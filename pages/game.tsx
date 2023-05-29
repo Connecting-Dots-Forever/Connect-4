@@ -1,7 +1,7 @@
 import Head from "next/head";
 
-import Board from "components/game/Board";
 import Instructions from "components/game/Instructions";
+import Board from "components/game/Board";
 
 export default function Game() {
 	return (

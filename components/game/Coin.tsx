@@ -4,12 +4,12 @@ interface CoinProps {
 	onMouseOver: () => void;
 	onClick: () => void;
 
-	cell: number;
+	turn: number;
 	type: "in-side" | "out-side";
 }
 
 export default function Disk({
-	cell,
+	turn,
 	type,
 
 	onMouseOver,
@@ -19,15 +19,13 @@ export default function Disk({
 		<div
 			className={
 				"hover:cursor-pointer  border-4  rounded-full " +
-				(type === "in-side" ? " border-black" : "border-white")
+				(type === "in-side" ? " border-black" : "border-white") +
+				(turn
+					? turn === 1
+						? " bg-amber-500"
+						: " bg-rose-500"
+					: " bg-white")
 			}
-			style={{
-				backgroundColor: cell
-					? cell === 1
-						? "red"
-						: "yellow"
-					: "white",
-			}}
 			onMouseOver={onMouseOver}
 			onClick={onClick}
 		></div>

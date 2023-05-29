@@ -1,13 +1,16 @@
-.gr {
-	display: grid;
-	grid-template-columns: repeat(7, 70px);
-	grid-template-rows: repeat(6, 70px);
-	justify-content: center;
-}
+/* .downArrow {
+	width: 0;
+	height: 0;
 
-.grTop {
-	display: grid;
-	grid-template-columns: repeat(7, 70px);
-	grid-template-rows: repeat(1, 70px);
-	justify-content: center;
+	border-left: 30px solid transparent;
+	border-right: 30px solid transparent;
+
+	border-top: 50px solid green;
+} */
+
+/* .triangle {
+	display: none;
 }
+.triangle:hover {
+	display: block;
+} */
