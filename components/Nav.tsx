@@ -17,7 +17,7 @@ const Navbar = () => {
 				</Link>
 				<div className="my-auto text-2xl ">
 					<Link href="/">
-						<a className="my-auto">Navbar</a>
+						<a className="my-auto">Connect Four</a>
 					</Link>
 				</div>
 			</div>

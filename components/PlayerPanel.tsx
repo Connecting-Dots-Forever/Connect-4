@@ -1,16 +1,18 @@
 import React, { useRef, useEffect, useState } from "react";
 import { getPlayerAvatar } from "utils/PlayerAvatars";
 import { getRandomUsername } from "utils/FakeUsername";
-import { TwitterPicker } from "react-color"
+import ColorPicker from "./ColorPicker/ColorPicker";
 
 type Props = {
-    number: number
+    number: number;
+    color: string;
 };
 
 const PlayerPanel = (props: Props) => {
     const [name, setName] = useState('');
     const [profile, setProfile] = useState<string>('');
-    const [coinColor, setCoinColor] = useState('#5f20d2');
+    const [coinColor, setCoinColor] = useState(props.color);
+    const [toggleColorPicker, setToggleColorPicker] = useState(false);
 
     const inputRef = useRef<HTMLInputElement | null>(null);
     const isInitialClick = useRef<boolean>(true);
@@ -66,10 +68,6 @@ const PlayerPanel = (props: Props) => {
         setTypingTimeout(newTypingTimeout);
     }
 
-    const handleCoinColorChange = (color: {hex: string}) => {
-        setCoinColor(color.hex);
-    }
-
     return (
         <div className={`flex flex-wrap justify-center flex-col rounded mt-5 bg-white p-3 w-2/3 sm:w-3/5 basis-1/2 ${props.number == 1 && `mr-3`} mb-2`}>
             {/* username */}
@@ -103,14 +101,18 @@ const PlayerPanel = (props: Props) => {
                 <p className="text-xs mb-1">Choose your coin color</p>
                 <div className="flex justify-start flex-col">
                     <div
-                        className="border-gray-200 rounded border-2 p-1 w-14 h-10 cursor-pointer flex justify-center items-center"
+                        className="border-gray-200 rounded border-2 p-1 w-14 h-10 cursor-pointer flex justify-center items-center focus:border-zinc-800"
+                        onClick={() => setToggleColorPicker(prev => !prev)}
                     >
                         <div style={{ 'backgroundColor': coinColor }} className="w-full h-full rounded"></div>
                     </div>
-                    <TwitterPicker
-                        color={coinColor}
-                        onChangeComplete={handleCoinColorChange}
-                    />
+                    {toggleColorPicker && <div className="w-full">
+                        <ColorPicker 
+                            color={coinColor}
+                            setColor={setCoinColor}
+                            setToggleColorPicker={setToggleColorPicker}
+                        />
+                    </div>}
                 </div>
             </div>
 
