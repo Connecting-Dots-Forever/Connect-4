@@ -3,7 +3,7 @@ import Head from "next/head";
 
 import NextNProgress from "nextjs-progressbar";
 
-import Tailwindbreakpoints from "components/Tailwindbreakpoints";
+// import Tailwindbreakpoints from "components/Tailwindbreakpoints";
 import Navbar from "components/Navbar";
 
 import "styles/globals.css";
