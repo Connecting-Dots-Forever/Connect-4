@@ -2,10 +2,7 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 
 import NextNProgress from "nextjs-progressbar";
-
-import Tailwindbreakpoints from "components/Tailwindbreakpoints";
-import Navbar from "components/Navbar";
-
+import Nav from "components/Nav";
 import "styles/globals.css";
 
 const App = ({ Component, pageProps }: AppProps) => {
@@ -35,7 +32,11 @@ const App = ({ Component, pageProps }: AppProps) => {
 				/>
 			</Head>
 
-			<Navbar />
+			<Nav />
+
+			<div className="-z-10 w-screen h-screen fixed">
+				<div className="gradient"></div>
+			</div>
 
 			<main id="main-content" className="container">
 				<Component {...pageProps} />
