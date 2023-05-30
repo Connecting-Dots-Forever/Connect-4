@@ -3,7 +3,7 @@ import Head from "next/head";
 
 import NextNProgress from "nextjs-progressbar";
 
-import Tailwindbreakpoints from "components/Tailwindbreakpoints";
+// import Tailwindbreakpoints from "components/Tailwindbreakpoints";
 import Navbar from "components/Navbar";
 
 import "styles/globals.css";
@@ -23,8 +23,8 @@ const App = ({ Component, pageProps }: AppProps) => {
 			{/* <Tailwindbreakpoints /> */}
 
 			<Head>
-				<title>Default Title</title>
-				<link rel="icon" href="/logo.svg" />
+				<title>Connect 4</title>
+				<link rel="icon" href="/logo.png" />
 
 				{/* meta tags */}
 				<meta charSet="UTF-8" />
