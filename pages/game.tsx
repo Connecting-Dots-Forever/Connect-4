@@ -12,7 +12,7 @@ export default function Game() {
 			</Head>
 
 			<Instructions />
-			<Board />
+			<Board first_turn={1} row={6} col={7} dots={4} />
 		</>
 	);
 }
