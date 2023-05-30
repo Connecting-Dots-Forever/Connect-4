@@ -5,7 +5,6 @@ import NextNProgress from "nextjs-progressbar";
 
 // import Tailwindbreakpoints from "components/Tailwindbreakpoints";
 import Navbar from "components/Navbar";
-
 import "styles/globals.css";
 
 const App = ({ Component, pageProps }: AppProps) => {
@@ -37,7 +36,11 @@ const App = ({ Component, pageProps }: AppProps) => {
 
 			<Navbar />
 
-			<main id="main-content" className="container">
+			<div className="-z-10 w-screen h-screen fixed">
+				<div className="gradient"></div>
+			</div>
+
+			<main id="main-content" className="container pt-10">
 				<Component {...pageProps} />
 			</main>
 		</>
