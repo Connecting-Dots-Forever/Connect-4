@@ -9,11 +9,7 @@ const Home = () => {
 			</Head>
 
 			<div className="container mt-5 ">
-				<Link href="/game">
-					<a type="button" className="btn">
-						Offline - 1 vs 1
-					</a>
-				</Link>
+				<h1 className="text-4xl">Currently Under Development</h1>
 			</div>
 		</>
 	);

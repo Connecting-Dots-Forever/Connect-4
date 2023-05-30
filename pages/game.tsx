@@ -13,6 +13,7 @@ export default function Game() {
 
 			<Instructions />
 			<Board first_turn={1} row={6} col={7} dots={4} />
+			<div className="mb-20"></div>
 		</>
 	);
 }

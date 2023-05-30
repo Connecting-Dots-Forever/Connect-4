@@ -24,7 +24,7 @@ export default function Navbar() {
 					</div>
 				</div>
 
-				<div className="flex  my-auto gap-4">
+				<div className="flex  my-auto gap-5">
 					<div className="text-xl hover:underline">
 						<Link href="/game">
 							<a>Offline - 1 vs 1</a>
@@ -32,16 +32,16 @@ export default function Navbar() {
 					</div>
 
 					<div className="text-xl hover:underline">
-						<Link href="/">
-							<a>home</a>
+						<Link href="/player">
+							<a>Player Card Page</a>
 						</Link>
 					</div>
 
-					<div className="text-xl hover:underline">
+					{/* <div className="text-xl hover:underline">
 						<Link href="/">
 							<a>home</a>
 						</Link>
-					</div>
+					</div> */}
 				</div>
 			</div>
 		</nav>

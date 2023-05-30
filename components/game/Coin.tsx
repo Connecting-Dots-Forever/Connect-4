@@ -19,15 +19,15 @@ export default function Disk({
 		<div
 			className={
 				"hover:cursor-pointer  border-4  rounded-full " +
-				(type === "in-side" ? " border-black" : "border-white") +
+				(type === "in-side" ? " border-black" : "border-transparent") +
 				(turn
 					? turn === 1
 						? " bg-amber-500"
 						: " bg-rose-500"
 					: " bg-white")
 			}
-			onMouseOver={onMouseOver}
-			onClick={onClick}
+			onMouseOver={type === "in-side" ? onMouseOver : () => {}}
+			onClick={type === "in-side" ? onClick : () => {}}
 		></div>
 	);
 }
