@@ -9,7 +9,7 @@ export default function Navbar() {
 					<Link href="/">
 						<a className="my-auto">
 							<Image
-								src="/logo.svg"
+								src="/logo.png"
 								alt="logo"
 								width={45}
 								height={45}

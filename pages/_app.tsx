@@ -24,7 +24,7 @@ const App = ({ Component, pageProps }: AppProps) => {
 
 			<Head>
 				<title>Connect 4</title>
-				<link rel="icon" href="/logo.svg" />
+				<link rel="icon" href="/logo.png" />
 
 				{/* meta tags */}
 				<meta charSet="UTF-8" />
