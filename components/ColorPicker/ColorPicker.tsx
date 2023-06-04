@@ -1,113 +1,124 @@
-import React from 'react'
-import Color from './Color'
-import cross from "public/images/cross.png"
-import Image from 'next/dist/client/image'
+import React from "react";
+import Color from "./Color";
+import cross from "public/images/cross.png";
+import Image from "next/dist/client/image";
 
 type Props = {
-    color: string;
-    setColor: React.Dispatch<React.SetStateAction<string>>;
-    setToggleColorPicker: React.Dispatch<React.SetStateAction<boolean>>;
-}
+  color: string;
+  setColor: React.Dispatch<React.SetStateAction<string>>;
+  setToggleColorPicker: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const ColorPicker = (props: Props) => {
-    const colors = [
-        "#FF6900",
-        "#FCB900",
-        "#7BDCB5",
-        "#00D084",
-        "#8ED1FC",
-        "#0693E3",
-        "#ABB8C3",
-        "#EB144C",
-        "#F78DA7",
-        "#9900EF",
-        "#795548",
-        "#000000",
-    ];
-    return (
-        <div className='absolute'>
-            <div className='relative'>
-                <div className='absolute top-0 right-auto bottom-auto left-0 w-4 h-4 rotate-45 shadow-md bg-white border ml-5 z-0'></div>
-            </div>
+  const [inputHex, setInputHex] = React.useState<string>("");
 
-            <div className='relative bg-white shadow-md p-3 mt-2 border rounded z-10'>
-                <div 
-                    className='absolute top-2 right-2 bottom-auto left-auto rounded-full w-4 h-4 bg-violet-100 flex justify-center items-center hover:bg-violet-300 cursor-pointer duration-100'
-                    onClick={() => props.setToggleColorPicker(false)}
-                >
-                    <Image
-                        src={cross}
-                        width="11px"
-                        height="11px"
-                        alt='cross'
-                    />
-                </div>
-                <div className='inline-grid gap-4 grid-cols-6 mt-5'>
-                    <Color
-                        color={colors[0]}
-                        current={props.color}
-                        setColor={props.setColor}
-                    />
-                    <Color
-                        color={colors[1]}
-                        current={props.color}
-                        setColor={props.setColor}
-                    />
-                    <Color
-                        color={colors[2]}
-                        current={props.color}
-                        setColor={props.setColor}
-                    />
-                    <Color
-                        color={colors[3]}
-                        current={props.color}
-                        setColor={props.setColor}
-                    />
-                    <Color
-                        color={colors[4]}
-                        current={props.color}
-                        setColor={props.setColor}
-                    />
-                    <Color
-                        color={colors[5]}
-                        current={props.color}
-                        setColor={props.setColor}
-                    />
-                    <Color
-                        color={colors[6]}
-                        current={props.color}
-                        setColor={props.setColor}
-                    />
-                    <Color
-                        color={colors[7]}
-                        current={props.color}
-                        setColor={props.setColor}
-                    />
-                    <Color
-                        color={colors[8]}
-                        current={props.color}
-                        setColor={props.setColor}
-                    />
-                    <Color
-                        color={colors[9]}
-                        current={props.color}
-                        setColor={props.setColor}
-                    />
-                    <Color
-                        color={colors[10]}
-                        current={props.color}
-                        setColor={props.setColor}
-                    />
-                    <Color
-                        color={colors[11]}
-                        current={props.color}
-                        setColor={props.setColor}
-                    />
-                </div>
+  const changeInputHex = (e: React.ChangeEvent<HTMLInputElement>) => {
+    var hexColorRegex = /^#?([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
+    const { value } = e.target;
+    const maxLen = 6;
 
-            </div>
+    setInputHex(value.length > maxLen ? value.slice(0, maxLen) : value);
+    if (hexColorRegex.test('#' + value)) {
+        props.setColor('#' + value);
+    }
+  };
+
+  const colors = [
+    "#FF6900",
+    "#FCB900",
+    "#7BDCB5",
+    "#00D084",
+    "#8ED1FC",
+    "#0693E3",
+    "#ABB8C3",
+    "#EB144C",
+    "#F78DA7",
+    "#9900EF",
+  ];
+
+  return (
+    <div className="absolute">
+      <div className="relative">
+        <div className="absolute top-0 right-auto bottom-auto left-0 w-4 h-4 rotate-45 border-solid border-t border-l bg-white ml-5 z-10"></div>
+      </div>
+
+      <div className="relative bg-white shadow-md p-3 mt-2 rounded z-0 border">
+        <div
+          className="absolute top-2 right-2 bottom-auto left-auto rounded-full w-4 h-4 bg-violet-100 flex justify-center items-center hover:bg-violet-300 cursor-pointer duration-100"
+          onClick={() => props.setToggleColorPicker(false)}
+        >
+          <Image src={cross} width="11px" height="11px" alt="cross" />
         </div>
-    )
-}
+        <div className="grid gap-2 grid-cols-7 mt-5">
+          <Color
+            color={colors[0]}
+            current={props.color}
+            setColor={props.setColor}
+          />
+          <Color
+            color={colors[1]}
+            current={props.color}
+            setColor={props.setColor}
+          />
+          <Color
+            color={colors[2]}
+            current={props.color}
+            setColor={props.setColor}
+          />
+          <Color
+            color={colors[3]}
+            current={props.color}
+            setColor={props.setColor}
+          />
+          <Color
+            color={colors[4]}
+            current={props.color}
+            setColor={props.setColor}
+          />
+          <Color
+            color={colors[5]}
+            current={props.color}
+            setColor={props.setColor}
+          />
+          <Color
+            color={colors[6]}
+            current={props.color}
+            setColor={props.setColor}
+          />
+          <Color
+            color={colors[7]}
+            current={props.color}
+            setColor={props.setColor}
+          />
+          <Color
+            color={colors[8]}
+            current={props.color}
+            setColor={props.setColor}
+          />
+          <Color
+            color={colors[9]}
+            current={props.color}
+            setColor={props.setColor}
+          />
+          <div className="col-span-4">
+            <div className="flex w-36">
+              <div className="bg-gray-200 w-7 h-7 flex justify-center items-center text-gray-500 rounded-l border">
+                #
+              </div>
+              <div>
+                <input
+                  type="text"
+                  className="w-28 h-7 focus-visible:outline-none border rounded-r px-1 uppercase text-gray-700 text-sm"
+                  value={inputHex}
+                  onChange={changeInputHex}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default ColorPicker;
