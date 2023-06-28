@@ -9,7 +9,7 @@ const Home = () => {
         <title>Player Card Selection</title>
       </Head>
 
-      <div className="container flex flex-col items-center mt-10">
+      <div className="container flex flex-col items-center mt-2">
         <div className="flex flex-col items-center justify-center">
           <h2 className="heading">Connect Four</h2>
           <p className="text-center text-gray-600 text-base">
@@ -19,8 +19,8 @@ const Home = () => {
 
         {/* 2 player panel */}
         <div className="flex justify-center w-full lg:w-9/12">
-          <PlayerPanel number={1} color="#FF6900" />
-          <PlayerPanel number={2} color="#EB144C" />
+          <PlayerPanel player="A" color="#FF6900" />
+          <PlayerPanel player="B" color="#EB144C" />
         </div>
 
         <div className="mt-10">NOTE: connection not done yet</div>

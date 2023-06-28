@@ -29,15 +29,16 @@ const PlayerPanel = (props: Props) => {
   }, []);
 
   return (
-    <div className="bg-white shadow h-60 w-60 rounded p-4">
+    //  style={{ 'backgroundColor': player.coinColor }}
+    <div className="bg-white shadow rounded p-4 text-black backdrop-blur-md">
       <div className="flex justify-center items-center">
-        <div dangerouslySetInnerHTML={{ __html: player.avatar }}></div>
+        <div dangerouslySetInnerHTML={{ __html: player.avatar }} className="rounded-full" style={{ 'backgroundColor': player.coinColor }}></div>
       </div>
-      <div className="flex flex-col justify-center items-center">
-        <div
-          className={`w-5 h-5 rounded-full mr-2 shadow-md shadow-[${player.coinColor}]`}
-          style={{ backgroundColor: player.coinColor }}
-        ></div>
+      <div className="flex justify-evenly items-center mt-2">
+        <span className="relative flex h-3 w-3">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-3 w-3 bg-green-600"></span>
+        </span>
         <div>{player.name}</div>
       </div>
     </div>
