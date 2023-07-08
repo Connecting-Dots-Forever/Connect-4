@@ -3,14 +3,24 @@ import Color from "./Color";
 import cross from "public/images/cross.png";
 import Image from "next/dist/client/image";
 
+type Player = {
+  name: string;
+  coinColor: string;
+};
+
 type Props = {
   color: string;
-  setColor: React.Dispatch<React.SetStateAction<string>>;
+  setPlayer: React.Dispatch<React.SetStateAction<Player>>;
   setToggleColorPicker: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const ColorPicker = (props: Props) => {
   const [inputHex, setInputHex] = React.useState<string>("");
+
+  const setColor = (color: string) => {
+    props.setPlayer((prev) => ({ ...prev, coinColor: color }));
+    props.setToggleColorPicker(false);
+  };
 
   const changeInputHex = (e: React.ChangeEvent<HTMLInputElement>) => {
     var hexColorRegex = /^#?([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
@@ -19,7 +29,8 @@ const ColorPicker = (props: Props) => {
 
     setInputHex(value.length > maxLen ? value.slice(0, maxLen) : value);
     if (hexColorRegex.test('#' + value)) {
-        props.setColor('#' + value);
+        setColor('#' + value);
+        props.setToggleColorPicker(false);
     }
   };
 
@@ -53,52 +64,52 @@ const ColorPicker = (props: Props) => {
           <Color
             color={colors[0]}
             current={props.color}
-            setColor={props.setColor}
+            setColor={setColor}
           />
           <Color
             color={colors[1]}
             current={props.color}
-            setColor={props.setColor}
+            setColor={setColor}
           />
           <Color
             color={colors[2]}
             current={props.color}
-            setColor={props.setColor}
+            setColor={setColor}
           />
           <Color
             color={colors[3]}
             current={props.color}
-            setColor={props.setColor}
+            setColor={setColor}
           />
           <Color
             color={colors[4]}
             current={props.color}
-            setColor={props.setColor}
+            setColor={setColor}
           />
           <Color
             color={colors[5]}
             current={props.color}
-            setColor={props.setColor}
+            setColor={setColor}
           />
           <Color
             color={colors[6]}
             current={props.color}
-            setColor={props.setColor}
+            setColor={setColor}
           />
           <Color
             color={colors[7]}
             current={props.color}
-            setColor={props.setColor}
+            setColor={setColor}
           />
           <Color
             color={colors[8]}
             current={props.color}
-            setColor={props.setColor}
+            setColor={setColor}
           />
           <Color
             color={colors[9]}
             current={props.color}
-            setColor={props.setColor}
+            setColor={setColor}
           />
           <div className="col-span-4">
             <div className="flex w-36">

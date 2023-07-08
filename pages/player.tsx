@@ -21,8 +21,8 @@ const Home = () => {
 
         {/* 2 player panel */}
         <div className="flex justify-center w-full lg:w-9/12">
-          <PlayerPanel player="A" color="#FF6900" />
-          <PlayerPanel player="B" color="#EB144C" />
+          <PlayerPanel playerAlphabet="A" />
+          <PlayerPanel playerAlphabet="B"  />
         </div>
 
         <Link href="/game">

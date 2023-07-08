@@ -5,33 +5,27 @@ import ColorPicker from "components/ColorPicker/ColorPicker";
 import { PlayerContext } from "./PlayerContext";
 
 type Props = {
-	player: string;
-	color: string;
+	playerAlphabet: string;
 };
 
 const PlayerPanel = (props: Props) => {
-	const [name, setName] = useState("");
+	const contextStore = React.useContext(PlayerContext);
+	const [player, setPlayer] = useState(contextStore.getPlayer(props.playerAlphabet));
 	const [profile, setProfile] = useState<string>("");
-	const [coinColor, setCoinColor] = useState(props.color);
 	const [toggleColorPicker, setToggleColorPicker] = useState(false);
 	const inputRef = useRef<HTMLInputElement | null>(null);
 	const isInitialClick = useRef<boolean>(true);
 	const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
-	const { setPlayer } = React.useContext(PlayerContext);
 
 	useEffect(() => {
-		setPlayer(props.player, {
-			name,
-			coinColor,
+		contextStore.setPlayer(props.playerAlphabet, {
+			name: player.name,
+			coinColor: player.coinColor,
 		});
-	}, [name, coinColor]);
+	}, [player.name, player.coinColor]);
 
 	useEffect(() => {
-		const _name = getRandomUsername()?.toString();
-
-		if (_name != undefined) setName(_name);
-
-		getPlayerAvatar(_name)
+		getPlayerAvatar(player.name)
 			.then((avatar) => {
 				setProfile(avatar);
 			})
@@ -56,7 +50,7 @@ const PlayerPanel = (props: Props) => {
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = e.target;
-		setName(value);
+		setPlayer(prevPlayer => ({...prevPlayer, name: value}));
 
 		if (typingTimeout) clearTimeout(typingTimeout);
 
@@ -76,23 +70,23 @@ const PlayerPanel = (props: Props) => {
 	return (
 		<div
 			className={`flex flex-wrap justify-center flex-col rounded mt-5 bg-white p-3 w-2/3 sm:w-3/5 basis-1/2 ${
-				props.player === "A" && `mr-3`
+				props.playerAlphabet === "A" && `mr-3`
 			} mb-2`}
 		>
 			{/* username */}
 			<label
-				htmlFor={`player${props.player}`}
+				htmlFor={`player${props.playerAlphabet}`}
 				className="text-xs mb-1 pl-1"
 			>
 				Player Name
 			</label>
 			<input
 				type="text"
-				value={name}
+				value={player.name}
 				onChange={handleInputChange}
 				className="border-gray-200 border-2 w-full px-3 py-3 mb-3 focus-visible:outline-none focus:border-zinc-800 rounded"
-				name={`player${props.player}`}
-				id={`player${props.player}`}
+				name={`player${props.playerAlphabet}`}
+				id={`player${props.playerAlphabet}`}
 				placeholder={`Enter Name`}
 				onClick={handleInputClick}
 				ref={inputRef}
@@ -124,15 +118,15 @@ const PlayerPanel = (props: Props) => {
 						onClick={() => setToggleColorPicker((prev) => !prev)}
 					>
 						<div
-							style={{ backgroundColor: coinColor }}
+							style={{ backgroundColor: player.coinColor }}
 							className="w-full h-full rounded"
 						></div>
 					</div>
 					{toggleColorPicker && (
 						<div className="w-full">
 							<ColorPicker
-								color={coinColor}
-								setColor={setCoinColor}
+								color={player.coinColor}
+								setPlayer={setPlayer}
 								setToggleColorPicker={setToggleColorPicker}
 							/>
 						</div>

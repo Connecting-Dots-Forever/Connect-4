@@ -1,4 +1,6 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import localStore from "utils/PlayerData";
+import { getRandomUsername } from "utils/FakeUsername";
 
 interface Player {
     name: string;
@@ -21,15 +23,36 @@ export const PlayerContext = createContext<IPlayerContext>({
 });
 
 const PlayerProvider = ({ children }: { children: ReactNode }) => {
-    const [playerA, setPlayerA] = useState<Player>({
-        name: "",
-        coinColor: "",
-    });
+    const [playerA, setPlayerA] = useState<Player>(initializePlayer("A"));
 
-    const [playerB, setPlayerB] = useState<Player>({
-        name: "",
-        coinColor: "",
-    });
+    const [playerB, setPlayerB] = useState<Player>(initializePlayer("B"));
+
+    function initializePlayer(type: string) {
+        if(type === "A") {
+            const player = localStore.getPlayerData("A");
+            if(player) {
+                return player;
+            }
+            else {
+                const name = getRandomUsername()?.toString() || "random";
+                const coinColor = localStore.PLAYERA_COLOR;
+                localStore.setPlayerData("A", {name, coinColor});
+                return {name, coinColor};
+            }
+        }
+        else {
+            const player = localStore.getPlayerData("B");
+            if(player) {
+                return player;
+            }
+            else {
+                const name = getRandomUsername()?.toString() || "random";
+                const coinColor = localStore.PLAYERB_COLOR;
+                localStore.setPlayerData("B", {name, coinColor});
+                return {name, coinColor};
+            }
+        }
+    }
 
     const getPlayer = (type: string) => {
         if(type === "A")
@@ -43,9 +66,11 @@ const PlayerProvider = ({ children }: { children: ReactNode }) => {
     const setPlayer = (type: string, player: Player) => {
         if(type === "A") {
             setPlayerA(player);
+            localStore.setPlayerData("A", player);
         }
         else if(type === "B") {
             setPlayerB(player);
+            localStore.setPlayerData("B", player);
         }
     }
 

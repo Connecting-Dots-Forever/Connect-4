@@ -5,7 +5,7 @@ import Image from "next/image"
 type Props = {
     color: string;
     current: string;
-    setColor: React.Dispatch<React.SetStateAction<string>>;
+    setColor: (color: string) => void;
 }
 
 const Color = (props: Props) => {

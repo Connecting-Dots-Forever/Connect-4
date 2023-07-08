@@ -4,15 +4,23 @@ interface IPlayerData {
 }
 
 const getPlayerData = (player: string) => {
-    const objString = localStorage.getItem(player);
-    if(objString)
-        return JSON.parse(objString);
-    return {name: '', coinColor: ''};
+    if(typeof window !== 'undefined' && localStorage) {
+        const objString = localStorage.getItem(player);
+        if(objString)
+            return JSON.parse(objString) as IPlayerData;
+        return null;
+    }
+    return null;
 }
 
 const setPlayerData = (player: string, user: IPlayerData) => {
-    const objString = JSON.stringify(user);
-    localStorage.setItem(player, objString);
+    if(typeof window !== 'undefined' && localStorage) {
+        const objString = JSON.stringify(user);
+        localStorage.setItem(player, objString);
+    }
 }
 
-export { getPlayerData, setPlayerData }
+const PLAYERA_COLOR = "#FF6900";
+const PLAYERB_COLOR = "#EB144C";
+
+export default { getPlayerData, setPlayerData, PLAYERA_COLOR, PLAYERB_COLOR }
