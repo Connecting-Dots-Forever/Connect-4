@@ -1,8 +1,10 @@
 import Head from "next/head";
 import PlayerPanel from "components/Player/PlayerPanel";
+import Link from "next/link";
 // import { useState } from "react";
 
 const Home = () => {
+  // const [readyState, setReadyState] = useState({A: false, B: false});
 	return (
     <>
       <Head>
@@ -23,7 +25,9 @@ const Home = () => {
           <PlayerPanel player="B" color="#EB144C" />
         </div>
 
-        <div className="mt-10">NOTE: connection not done yet</div>
+        <Link href="/game">
+          <button className="rounded bg-zinc-800 text-white py-2 px-4 mt-4">Start Game</button>
+        </Link>
       </div>
     </>
   );

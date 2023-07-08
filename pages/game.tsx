@@ -2,6 +2,8 @@ import Head from "next/head";
 
 import Instructions from "components/game/Instructions";
 import Board from "components/game/Board";
+import { PlayerContext } from "components/Player/PlayerContext";
+import BoardViewWithPlayerContext from "components/game/Board";
 
 export default function Game() {
 	return (
@@ -11,8 +13,8 @@ export default function Game() {
 				<title>C4 - Offline - 1 vs 1</title>
 			</Head>
 
-			<Instructions />
-			<Board first_turn={1} row={6} col={7} dots={4} />
+			{/* <Instructions /> */}
+			<BoardViewWithPlayerContext />
 			<div className="mb-20"></div>
 		</>
 	);

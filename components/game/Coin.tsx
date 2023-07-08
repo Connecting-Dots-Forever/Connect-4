@@ -6,12 +6,15 @@ interface CoinProps {
 
 	turn: number;
 	type: "in-side" | "out-side";
+	coinColorA: string;
+	coinColorB: string;
 }
 
 export default function Disk({
 	turn,
 	type,
-
+	coinColorA,
+	coinColorB,
 	onMouseOver,
 	onClick,
 }: CoinProps) {
@@ -19,13 +22,9 @@ export default function Disk({
 		<div
 			className={
 				"hover:cursor-pointer  border-4  rounded-full " +
-				(type === "in-side" ? " border-black" : "border-transparent") +
-				(turn
-					? turn === 1
-						? " bg-amber-500"
-						: " bg-rose-500"
-					: " bg-white")
+				(type === "in-side" ? " border-black" : "border-transparent")
 			}
+			style={{"backgroundColor": (turn ? (turn === 1 ? coinColorA : coinColorB) : "#FFFFFF")}}
 			onMouseOver={type === "in-side" ? onMouseOver : () => {}}
 			onClick={type === "in-side" ? onClick : () => {}}
 		></div>

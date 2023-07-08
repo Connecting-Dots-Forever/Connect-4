@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { getPlayerAvatar } from "utils/PlayerAvatars";
 import { getRandomUsername } from "utils/FakeUsername";
 import ColorPicker from "components/ColorPicker/ColorPicker";
+import { PlayerContext } from "./PlayerContext";
 
 type Props = {
 	player: string;
@@ -13,13 +14,17 @@ const PlayerPanel = (props: Props) => {
 	const [profile, setProfile] = useState<string>("");
 	const [coinColor, setCoinColor] = useState(props.color);
 	const [toggleColorPicker, setToggleColorPicker] = useState(false);
-
 	const inputRef = useRef<HTMLInputElement | null>(null);
 	const isInitialClick = useRef<boolean>(true);
+	const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
+	const { setPlayer } = React.useContext(PlayerContext);
 
-	const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(
-		null
-	);
+	useEffect(() => {
+		setPlayer(props.player, {
+			name,
+			coinColor,
+		});
+	}, [name, coinColor]);
 
 	useEffect(() => {
 		const _name = getRandomUsername()?.toString();
@@ -135,12 +140,12 @@ const PlayerPanel = (props: Props) => {
 				</div>
 			</div>
 
-			<button
+			{/* <button
 				type="button"
 				className="bg-zinc-800 text-white py-3 text-center border-gray-400 rounded"
 			>
 				Ready
-			</button>
+			</button> */}
 		</div>
 	);
 };

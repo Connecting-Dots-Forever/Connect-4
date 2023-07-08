@@ -5,22 +5,22 @@ interface Player {
     coinColor: string;
 }
 
-interface PlayerContext {
+interface IPlayerContext {
   getPlayer: (type: string) => Player;
   setPlayer: (type: string, player: Player) => void;
 }
 
-const PlayerContext = createContext<PlayerContext>({
+export const PlayerContext = createContext<IPlayerContext>({
     getPlayer: () => {
         return {
-        name: "",
-        coinColor: "",
+            name: "",
+            coinColor: "",
         };
     },
     setPlayer: () => {},
 });
 
-export const PlayerProvider = ({ children }: { children: ReactNode }) => {
+const PlayerProvider = ({ children }: { children: ReactNode }) => {
     const [playerA, setPlayerA] = useState<Player>({
         name: "",
         coinColor: "",
@@ -55,3 +55,5 @@ export const PlayerProvider = ({ children }: { children: ReactNode }) => {
         </PlayerContext.Provider>
     );
 }
+
+export default PlayerProvider;

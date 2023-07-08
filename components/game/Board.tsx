@@ -1,9 +1,8 @@
 import { Component } from "react";
-
-// import styles from "styles/Game.module.css";
 import Coin from "./Coin";
 import Triangle from "./Triangle";
 import PlayerPanel from "components/Player/InGame/PlayerPanel";
+import { PlayerContext } from "components/Player/PlayerContext";
 
 type player = 1 | 2;
 type blank_type = 0;
@@ -11,11 +10,17 @@ type matrix_type = 0 | 1 | 2;
 
 let blank: blank_type = 0;
 
+type Player = {
+	name: string;
+	coinColor: string;
+}
+
 type MyProps = {
 	first_turn: player;
 	row: number;
 	col: number;
 	dots: number;
+	getPlayer: (type: string) => Player; // Add getPlayer function to props
 };
 
 type MyState = {
@@ -223,112 +228,117 @@ class BoardView extends Component<MyProps, MyState> {
 	}
 
 	render() {
-		return (
-      <div className="flex flex-col justify-center">
-        <div>
-          {/* current turn */}
-          <div className="flex mt-10 gap-1">
-            <div
-              className="btn "
-              onClick={() =>
-                this.setState({
-                  current_turn: this.props.first_turn,
-                  matrix: Array.from(Array(this.props.row), () =>
-                    new Array(this.props.col).fill(blank)
-                  ),
-                  is_won: false,
-                  message: "",
-                })
-              }
-            >
-              restart
-            </div>
-            <div className="text-xl my-auto">
-              {/* Current turn: Player -{">"} {turn} */}
-              Current :
-            </div>
-            <div
-              className={"grid"}
-              style={{
-                gridTemplateRows: "repeat(1, 40px)",
-                gridTemplateColumns: "repeat(1, 40px)",
-              }}
-            >
-              <Coin
-                turn={this.state.current_turn}
-                type={"out-side"}
-                onMouseOver={function () {}}
-                onClick={function () {}}
-              />
-            </div>
-          </div>
+		const { getPlayer } = this.props;
 
-          <div className="text-xl my-5 text-center">{this.state.message}</div>
-        </div>
-        <div className="flex justify-between items-center w-full">
-          <PlayerPanel />
-          <div className="flex justify-center">
-            <div
-              style={{
-                width: this.props.col * 70 + 10 + "px",
-              }}
-            >
-              {/* upper coin to place in board */}
-              {/* not working properly : color not getting updated */}
-              {/* that's y using triangle */}
-              <div
-                className={"grid justify-center mb-4"}
-                style={{
-                  gridTemplateRows: "repeat(1, 70px)",
-                  gridTemplateColumns: `repeat(${this.props.col}, 70px)`,
-                }}
-              >
-                {this.state.hoverTop.map((col_val, index) => (
-                  // <Coin
-                  // 	key={`in-${index}`}
-                  // 	turn={col_val}
-                  // 	type="out-side"
-                  // 	onMouseOver={() => bgOnTop(index)}
-                  // 	onClick={() => placeCoin(index)}
-                  // />
-                  <Triangle
-                    key={index}
-                    turn={col_val}
-                    type="out-side"
-                    onMouseOver={() => this.bgOnTop(index)}
-                    onClick={() => this.is_winning(index)}
-                  />
-                ))}
-              </div>
-              {/* board to play game */}
-              <div>
-                <div
-                  className={"grid justify-center bg-black p-2"}
-                  style={{
-                    gridTemplateRows: `repeat(${this.props.row}, 70px)`,
-                    gridTemplateColumns: `repeat(${this.props.col}, 70px)`,
-                  }}
-                >
-                  {this.state.matrix.map((row, x_index) =>
-                    row.map((cell_value, y_index) => (
-                      <Coin
-                        key={`in-${x_index}-${y_index}`}
-                        turn={cell_value}
-                        type="in-side"
-                        onMouseOver={() => this.bgOnTop(y_index)}
-                        onClick={() => this.is_winning(y_index)}
-                      />
-                    ))
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-          <PlayerPanel />
-        </div>
-      </div>
-    );
+		return (
+			<div className="flex flex-col justify-center">
+				{/* message */}
+				<div className="flex justify-center mb-4">
+					{this.state.message && (
+						<div className="bg-white px-2 py-1 rounded">
+							{this.state.message}
+						</div>
+					)}	
+				</div>
+
+				{/* controls */}
+				<div className="flex justify-center mb-4">
+					<div className="grid grid-cols-2 gap-2 bg-white rounded">
+						<div
+							className="flex justify-center hover:bg-slate-300 px-4 py-2 cursor-pointer rounded"
+							onClick={() =>
+								this.setState({
+									current_turn: this.props.first_turn,
+									matrix: Array.from(Array(this.props.row), () =>
+										new Array(this.props.col).fill(blank)
+									),
+									is_won: false,
+									message: "",
+								})
+							}
+						>
+							<img src="/images/icons8-restart.svg" className="w-3 mr-2" alt="restart icon" />
+							<span>Restart</span>
+						</div>
+						<div className="hover:bg-slate-300 flex justify-center px-4 py-2 cursor-pointer rounded">
+							<span>{this.state.current_turn}</span>
+						</div>
+					</div>
+				</div>
+
+				<div className="flex justify-between items-center w-full">
+					<PlayerPanel player={getPlayer("A")} />
+					<div className="flex justify-center">
+						<div
+							style={{
+								width: this.props.col * 70 + 10 + "px",
+							}}
+						>
+							{/* upper coin to place in board */}
+							{/* not working properly : color not getting updated */}
+							{/* that's y using triangle */}
+							<div
+								className={"grid justify-center mb-4"}
+								style={{
+									gridTemplateRows: "repeat(1, 70px)",
+									gridTemplateColumns: `repeat(${this.props.col}, 70px)`,
+								}}
+							>
+								{this.state.hoverTop.map((col_val, index) => (
+									// <Coin
+									// 	key={`in-${index}`}
+									// 	turn={col_val}
+									// 	type="out-side"
+									// 	onMouseOver={() => bgOnTop(index)}
+									// 	onClick={() => placeCoin(index)}
+									// />
+									<Triangle
+										key={index}
+										turn={col_val}
+										type="out-side"
+										onMouseOver={() => this.bgOnTop(index)}
+										onClick={() => this.is_winning(index)}
+									/>
+								))}
+							</div>
+							{/* board to play game */}
+							<div>
+								<div
+									className={"grid justify-center bg-black p-2"}
+									style={{
+										gridTemplateRows: `repeat(${this.props.row}, 70px)`,
+										gridTemplateColumns: `repeat(${this.props.col}, 70px)`,
+									}}
+								>
+									{this.state.matrix.map((row, x_index) =>
+										row.map((cell_value, y_index) => (
+											<Coin
+												key={`in-${x_index}-${y_index}`}
+												turn={cell_value}
+												type="in-side"
+												coinColorA={getPlayer("A").coinColor}
+												coinColorB={getPlayer("B").coinColor}
+												onMouseOver={() => this.bgOnTop(y_index)}
+												onClick={() => this.is_winning(y_index)}
+											/>
+										))
+									)}
+								</div>
+							</div>
+						</div>
+					</div>
+					<PlayerPanel player={getPlayer("B")} />
+				</div>
+			</div>
+		);
 	}
 }
 
-export default BoardView;
+// Wraping the BoardView component with the HOC
+const BoardViewWithPlayerContext = () => (
+	<PlayerContext.Consumer>
+		{({ getPlayer }) => <BoardView first_turn={1} row={6} col={7} dots={4} getPlayer={getPlayer} />}
+	</PlayerContext.Consumer>
+);
+
+export default BoardViewWithPlayerContext;
