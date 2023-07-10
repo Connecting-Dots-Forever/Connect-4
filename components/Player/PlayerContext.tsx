@@ -1,6 +1,6 @@
-import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { ReactNode, createContext, useState } from "react";
 import localStore from "utils/PlayerData";
-import { getRandomUsername } from "utils/FakeUsername";
+import { getRandomPlayer } from "utils/DummyPlayer";
 
 interface Player {
     name: string;
@@ -9,73 +9,74 @@ interface Player {
 
 interface IPlayerContext {
   getPlayer: (type: string) => Player;
-  setPlayer: (type: string, player: Player) => void;
+  setPlayer: (type: string, player: Player) => boolean;
+  tempAssignPlayer: (type: string) => Player;
 }
 
 export const PlayerContext = createContext<IPlayerContext>({
-    getPlayer: () => {
+    getPlayer: (type: string) => {
         return {
             name: "",
             coinColor: "",
         };
     },
-    setPlayer: () => {},
+    setPlayer: (type: string, player: Player) => false,
+    tempAssignPlayer(type) {
+        return {
+            name: "",
+            coinColor: "",
+        };
+    },
 });
 
 const PlayerProvider = ({ children }: { children: ReactNode }) => {
-    const [playerA, setPlayerA] = useState<Player>(initializePlayer("A"));
+    const [playerA, setPlayerA] = useState<Player>(getRandomPlayer("A"));
+    const [playerB, setPlayerB] = useState<Player>(getRandomPlayer("B"));
 
-    const [playerB, setPlayerB] = useState<Player>(initializePlayer("B"));
+    // return player data from local storage if exists, otherwise return random player data
+    const getPlayer = (type: string) => {
+        const storedPlayer = localStore.getPlayerData(type);
+        if(storedPlayer) {
+            if(type === "A") setPlayerA(storedPlayer);
+            else setPlayerB(storedPlayer);
 
-    function initializePlayer(type: string) {
-        if(type === "A") {
-            const player = localStore.getPlayerData("A");
-            if(player) {
-                return player;
-            }
-            else {
-                const name = getRandomUsername()?.toString() || "random";
-                const coinColor = localStore.PLAYERA_COLOR;
-                localStore.setPlayerData("A", {name, coinColor});
-                return {name, coinColor};
-            }
+            return storedPlayer;
         }
         else {
-            const player = localStore.getPlayerData("B");
-            if(player) {
-                return player;
-            }
-            else {
-                const name = getRandomUsername()?.toString() || "random";
-                const coinColor = localStore.PLAYERB_COLOR;
-                localStore.setPlayerData("B", {name, coinColor});
-                return {name, coinColor};
-            }
+            if(type === "A") localStore.setPlayerData(type, playerA);
+            else localStore.setPlayerData(type, playerB);
+
+            return type === "A" ? playerA : playerB;
         }
     }
 
-    const getPlayer = (type: string) => {
-        if(type === "A")
-            return playerA;
-        else if(type === "B")
-            return playerB;
-        else
-            return {} as Player;
-    }
-
+    // set player data in local storage and context store
     const setPlayer = (type: string, player: Player) => {
         if(type === "A") {
             setPlayerA(player);
-            localStore.setPlayerData("A", player);
         }
         else if(type === "B") {
             setPlayerB(player);
-            localStore.setPlayerData("B", player);
         }
+        else return false;
+
+        if(!localStore.setPlayerData(type, player)) return false;
+        return true;
+    }
+
+    // for temporary assignment of player data during server side rendering
+    const tempAssignPlayer = (type: string) => {
+        if(type === "A") {
+            return playerA;
+        }
+        else if(type === "B") {
+            return playerB;
+        }
+        else return { name: "", coinColor: "" }
     }
 
     return (
-        <PlayerContext.Provider value={{ getPlayer, setPlayer }}>
+        <PlayerContext.Provider value={{ getPlayer, setPlayer, tempAssignPlayer }}>
             {children}
         </PlayerContext.Provider>
     );

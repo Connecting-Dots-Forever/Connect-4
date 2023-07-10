@@ -21,6 +21,7 @@ type MyProps = {
 	col: number;
 	dots: number;
 	getPlayer: (type: string) => Player; // Add getPlayer function to props
+	tempAssignPlayer: (type: string) => Player;
 };
 
 type MyState = {
@@ -29,6 +30,8 @@ type MyState = {
 	hoverTop: matrix_type[];
 	is_won: boolean;
 	message: string;
+	playerA: Player;
+	playerB: Player;
 };
 
 class BoardView extends Component<MyProps, MyState> {
@@ -47,7 +50,19 @@ class BoardView extends Component<MyProps, MyState> {
 			hoverTop: [0, 0, 0, 0, 0, 0, 0],
 			is_won: false,
 			message: "",
+			// assign both players from context store (temporarily/when rendering on server side) to avoid data mismatch warning
+			playerA: this.props.tempAssignPlayer("A"),
+			playerB: this.props.tempAssignPlayer("B"),
 		};
+	}
+
+	// when site will be rendered on client side, it will get player data from local storage/context store as localStorage only works on client side
+	componentDidMount(): void {
+		this.setState(prev => ({
+			...prev,
+			playerA: this.props.getPlayer("A"),
+			playerB: this.props.getPlayer("B"),
+		}));
 	}
 
 	// ui related
@@ -228,8 +243,6 @@ class BoardView extends Component<MyProps, MyState> {
 	}
 
 	render() {
-		const { getPlayer } = this.props;
-
 		return (
 			<div className="flex flex-col justify-center">
 				{/* message */}
@@ -267,7 +280,7 @@ class BoardView extends Component<MyProps, MyState> {
 				</div>
 
 				<div className="flex justify-between items-center w-full">
-					<PlayerPanel player={getPlayer("A")} />
+					<PlayerPanel player={this.state.playerA} />
 					<div className="flex justify-center">
 						<div
 							style={{
@@ -316,8 +329,8 @@ class BoardView extends Component<MyProps, MyState> {
 												key={`in-${x_index}-${y_index}`}
 												turn={cell_value}
 												type="in-side"
-												coinColorA={getPlayer("A").coinColor}
-												coinColorB={getPlayer("B").coinColor}
+												coinColorA={this.state.playerA.coinColor}
+												coinColorB={this.state.playerB.coinColor}
 												onMouseOver={() => this.bgOnTop(y_index)}
 												onClick={() => this.is_winning(y_index)}
 											/>
@@ -327,7 +340,7 @@ class BoardView extends Component<MyProps, MyState> {
 							</div>
 						</div>
 					</div>
-					<PlayerPanel player={getPlayer("B")} />
+					<PlayerPanel player={this.state.playerB} />
 				</div>
 			</div>
 		);
@@ -337,7 +350,7 @@ class BoardView extends Component<MyProps, MyState> {
 // Wraping the BoardView component with the HOC
 const BoardViewWithPlayerContext = () => (
 	<PlayerContext.Consumer>
-		{({ getPlayer }) => <BoardView first_turn={1} row={6} col={7} dots={4} getPlayer={getPlayer} />}
+		{({ getPlayer, tempAssignPlayer }) => <BoardView first_turn={1} row={6} col={7} dots={4} getPlayer={getPlayer} tempAssignPlayer={tempAssignPlayer} />}
 	</PlayerContext.Consumer>
 );
 

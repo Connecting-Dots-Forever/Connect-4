@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import { getPlayerAvatar } from "utils/PlayerAvatars";
-import { getRandomUsername } from "utils/FakeUsername";
 import ColorPicker from "components/ColorPicker/ColorPicker";
 import { PlayerContext } from "./PlayerContext";
 
@@ -10,28 +9,18 @@ type Props = {
 
 const PlayerPanel = (props: Props) => {
 	const contextStore = React.useContext(PlayerContext);
-	const [player, setPlayer] = useState(contextStore.getPlayer(props.playerAlphabet));
+	const [player, setPlayer] = useState(contextStore.tempAssignPlayer(props.playerAlphabet));
 	const [profile, setProfile] = useState<string>("");
 	const [toggleColorPicker, setToggleColorPicker] = useState(false);
 	const inputRef = useRef<HTMLInputElement | null>(null);
 	const isInitialClick = useRef<boolean>(true);
 	const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
 
+	// upon client load, check if player data is stored in local storage otherwise set it
 	useEffect(() => {
-		contextStore.setPlayer(props.playerAlphabet, {
-			name: player.name,
-			coinColor: player.coinColor,
-		});
-	}, [player.name, player.coinColor]);
-
-	useEffect(() => {
-		getPlayerAvatar(player.name)
-			.then((avatar) => {
-				setProfile(avatar);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		const contextPlayer = contextStore.getPlayer(props.playerAlphabet);
+		setPlayer(contextPlayer);
+		updatePlayerAvatar(contextPlayer.name);
 
 		return () => {
 			if (typingTimeout) {
@@ -39,6 +28,18 @@ const PlayerPanel = (props: Props) => {
 			}
 		};
 	}, []);
+
+	// update avatar image (supposed to be called when player name is changed)
+	const updatePlayerAvatar = async (playerName: string) => {
+		// console.log(playerName, "updating avatar");
+		await getPlayerAvatar(playerName)
+		.then((avatar) => {
+			setProfile(avatar);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+	};
 
 	// when user will click on input having randomly generated text it will select whole text
 	const handleInputClick = () => {
@@ -48,23 +49,25 @@ const PlayerPanel = (props: Props) => {
 		}
 	};
 
+	// when user will change input value, it will update player name and avatar
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = e.target;
+
 		setPlayer(prevPlayer => ({...prevPlayer, name: value}));
+		contextStore.setPlayer(props.playerAlphabet, {...player, name: value});
 
 		if (typingTimeout) clearTimeout(typingTimeout);
 
 		const newTypingTimeout = setTimeout(() => {
-			getPlayerAvatar(value)
-				.then((avatar) => {
-					setProfile(avatar);
-				})
-				.catch((err) => {
-					console.log(err);
-				});
+			updatePlayerAvatar(value);
 		}, 1000);
 
 		setTypingTimeout(newTypingTimeout);
+	};
+
+	const handleColorChange = (color: string) => {
+		setPlayer(prevPlayer => ({...prevPlayer, coinColor: color}));
+		contextStore.setPlayer(props.playerAlphabet, {...player, coinColor: color});
 	};
 
 	return (
@@ -126,20 +129,13 @@ const PlayerPanel = (props: Props) => {
 						<div className="w-full">
 							<ColorPicker
 								color={player.coinColor}
-								setPlayer={setPlayer}
+								handleColorChange={handleColorChange}
 								setToggleColorPicker={setToggleColorPicker}
 							/>
 						</div>
 					)}
 				</div>
 			</div>
-
-			{/* <button
-				type="button"
-				className="bg-zinc-800 text-white py-3 text-center border-gray-400 rounded"
-			>
-				Ready
-			</button> */}
 		</div>
 	);
 };

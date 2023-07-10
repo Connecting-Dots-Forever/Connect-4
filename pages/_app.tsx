@@ -39,7 +39,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       </div>
 
       <PlayerProvider>
-        <main id="main-content" className="container pt-10">
+        <main id="main-content" className="container pt-2">
           <Component {...pageProps} />
         </main>
       </PlayerProvider>

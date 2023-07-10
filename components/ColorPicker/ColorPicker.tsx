@@ -3,14 +3,9 @@ import Color from "./Color";
 import cross from "public/images/cross.png";
 import Image from "next/dist/client/image";
 
-type Player = {
-  name: string;
-  coinColor: string;
-};
-
 type Props = {
   color: string;
-  setPlayer: React.Dispatch<React.SetStateAction<Player>>;
+  handleColorChange: (color: string) => void;
   setToggleColorPicker: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -18,7 +13,7 @@ const ColorPicker = (props: Props) => {
   const [inputHex, setInputHex] = React.useState<string>("");
 
   const setColor = (color: string) => {
-    props.setPlayer((prev) => ({ ...prev, coinColor: color }));
+    props.handleColorChange(color);
     props.setToggleColorPicker(false);
   };
 
