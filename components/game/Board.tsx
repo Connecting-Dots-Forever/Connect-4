@@ -21,7 +21,6 @@ type MyProps = {
 	col: number;
 	dots: number;
 	getPlayer: (type: string) => Player; // Add getPlayer function to props
-	tempAssignPlayer: (type: string) => Player;
 };
 
 type MyState = {
@@ -51,17 +50,20 @@ class BoardView extends Component<MyProps, MyState> {
 			is_won: false,
 			message: "",
 			// assign both players from context store (temporarily/when rendering on server side) to avoid data mismatch warning
-			playerA: this.props.tempAssignPlayer("A"),
-			playerB: this.props.tempAssignPlayer("B"),
+			playerA: { name: "random", coinColor: "" },
+			playerB: { name: "random", coinColor: "" },
 		};
 	}
 
 	// when site will be rendered on client side, it will get player data from local storage/context store as localStorage only works on client side
 	componentDidMount(): void {
+		const contextPlayerA = this.props.getPlayer("A");
+		const contextPlayerB = this.props.getPlayer("B");
+		
 		this.setState(prev => ({
 			...prev,
-			playerA: this.props.getPlayer("A"),
-			playerB: this.props.getPlayer("B"),
+			playerA: contextPlayerA,
+			playerB: contextPlayerB,
 		}));
 	}
 
@@ -350,7 +352,7 @@ class BoardView extends Component<MyProps, MyState> {
 // Wraping the BoardView component with the HOC
 const BoardViewWithPlayerContext = () => (
 	<PlayerContext.Consumer>
-		{({ getPlayer, tempAssignPlayer }) => <BoardView first_turn={1} row={6} col={7} dots={4} getPlayer={getPlayer} tempAssignPlayer={tempAssignPlayer} />}
+		{({ getPlayer }) => <BoardView first_turn={1} row={6} col={7} dots={4} getPlayer={getPlayer} />}
 	</PlayerContext.Consumer>
 );
 
