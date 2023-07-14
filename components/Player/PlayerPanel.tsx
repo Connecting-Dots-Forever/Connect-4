@@ -4,7 +4,7 @@ import { getRandomUsername } from "utils/FakeUsername";
 import ColorPicker from "components/ColorPicker/ColorPicker";
 
 type Props = {
-	player: string;
+	number: number;
 	color: string;
 };
 
@@ -41,7 +41,7 @@ const PlayerPanel = (props: Props) => {
 		};
 	}, []);
 
-	// when user will click on input having randomly generated text it will select whole text
+	// when user click on input having randomly generated text it will select whole text
 	const handleInputClick = () => {
 		if (isInitialClick.current) {
 			inputRef.current?.select();
@@ -71,12 +71,12 @@ const PlayerPanel = (props: Props) => {
 	return (
 		<div
 			className={`flex flex-wrap justify-center flex-col rounded mt-5 bg-white p-3 w-2/3 sm:w-3/5 basis-1/2 ${
-				props.player === "A" && `mr-3`
+				props.number == 1 && `mr-3`
 			} mb-2`}
 		>
 			{/* username */}
 			<label
-				htmlFor={`player${props.player}`}
+				htmlFor={`player${props.number}`}
 				className="text-xs mb-1 pl-1"
 			>
 				Player Name
@@ -86,8 +86,8 @@ const PlayerPanel = (props: Props) => {
 				value={name}
 				onChange={handleInputChange}
 				className="border-gray-200 border-2 w-full px-3 py-3 mb-3 focus-visible:outline-none focus:border-zinc-800 rounded"
-				name={`player${props.player}`}
-				id={`player${props.player}`}
+				name={`player${props.number}`}
+				id={`player${props.number}`}
 				placeholder={`Enter Name`}
 				onClick={handleInputClick}
 				ref={inputRef}

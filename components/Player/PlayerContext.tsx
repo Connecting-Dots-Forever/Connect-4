@@ -1,57 +1,32 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+// Path: utils\PlayerContext.ts
 
-interface Player {
+import { ReactNode, createContext, useState } from "react";
+import { getPlayerData } from "utils/PlayerData";
+
+interface IPlayer {
     name: string;
+    profile: string;
     coinColor: string;
 }
 
-interface PlayerContext {
-  getPlayer: (type: string) => Player;
-  setPlayer: (type: string, player: Player) => void;
+interface IPlayerContext {
+    playerA: IPlayer;
+    setPlayerA: React.Dispatch<React.SetStateAction<IPlayer>>;
+    playerB: IPlayer;
+    setPlayerB: React.Dispatch<React.SetStateAction<IPlayer>>;
 }
 
-const PlayerContext = createContext<PlayerContext>({
-    getPlayer: () => {
-        return {
-        name: "",
-        coinColor: "",
-        };
-    },
-    setPlayer: () => {},
-});
+const PlayerContext = createContext<IPlayerContext | null>(null);
 
 export const PlayerProvider = ({ children }: { children: ReactNode }) => {
-    const [playerA, setPlayerA] = useState<Player>({
-        name: "",
-        coinColor: "",
-    });
-
-    const [playerB, setPlayerB] = useState<Player>({
-        name: "",
-        coinColor: "",
-    });
-
-    const getPlayer = (type: string) => {
-        if(type === "A")
-            return playerA;
-        else if(type === "B")
-            return playerB;
-        else
-            return {} as Player;
-    }
-
-    const setPlayer = (type: string, player: Player) => {
-        if(type === "A") {
-            setPlayerA(player);
-        }
-        else if(type === "B") {
-            setPlayerB(player);
-        }
-    }
+    const [playerA, setPlayerA] = useState<IPlayer>(getPlayerData("playerA"));
+    const [playerB, setPlayerB] = useState<IPlayer>(getPlayerData("playerB"));
 
     return (
-        <PlayerContext.Provider value={{ getPlayer, setPlayer }}>
+        <PlayerContext.Provider value={{ playerA, setPlayerA, playerB, setPlayerB }}>
             {children}
         </PlayerContext.Provider>
-    );
-}
+    )
+};
+
+export default PlayerContext;
