@@ -25,7 +25,6 @@ const PlayerPanel = (props: Props) => {
 
         {/* player name */}
         <div>{props.player.name}</div>
-        
       </div>
     </div>
   );

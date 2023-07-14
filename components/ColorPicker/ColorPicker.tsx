@@ -42,6 +42,8 @@ const ColorPicker = (props: Props) => {
     "#9900EF",
   ];
 
+  const ColorComponents = colors.map(color => <Color key={color} color={color} current={props.color} setColor={setColor} />)
+
   return (
     <div className="absolute">
       <div className="relative">
@@ -56,56 +58,7 @@ const ColorPicker = (props: Props) => {
           <Image src={cross} width="11px" height="11px" alt="cross" />
         </div>
         <div className="grid gap-2 grid-cols-7 mt-5">
-          <Color
-            color={colors[0]}
-            current={props.color}
-            setColor={setColor}
-          />
-          <Color
-            color={colors[1]}
-            current={props.color}
-            setColor={setColor}
-          />
-          <Color
-            color={colors[2]}
-            current={props.color}
-            setColor={setColor}
-          />
-          <Color
-            color={colors[3]}
-            current={props.color}
-            setColor={setColor}
-          />
-          <Color
-            color={colors[4]}
-            current={props.color}
-            setColor={setColor}
-          />
-          <Color
-            color={colors[5]}
-            current={props.color}
-            setColor={setColor}
-          />
-          <Color
-            color={colors[6]}
-            current={props.color}
-            setColor={setColor}
-          />
-          <Color
-            color={colors[7]}
-            current={props.color}
-            setColor={setColor}
-          />
-          <Color
-            color={colors[8]}
-            current={props.color}
-            setColor={setColor}
-          />
-          <Color
-            color={colors[9]}
-            current={props.color}
-            setColor={setColor}
-          />
+          {ColorComponents}
           <div className="col-span-4">
             <div className="flex w-36">
               <div className="bg-gray-200 w-7 h-7 flex justify-center items-center text-gray-500 rounded-l border">
