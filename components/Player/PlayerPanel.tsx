@@ -66,6 +66,13 @@ const PlayerPanel = (props: Props) => {
 	};
 
 	const handleColorChange = (color: string) => {
+		if(props.playerAlphabet === "A") {
+			const playerB = contextStore.getPlayer("B");
+			if(playerB.coinColor === color) return;
+		} else {
+			const playerA = contextStore.getPlayer("A");
+			if(playerA.coinColor === color) return;
+		}
 		setPlayer(prevPlayer => ({...prevPlayer, coinColor: color}));
 		contextStore.setPlayer(props.playerAlphabet, {...player, coinColor: color});
 	};

@@ -7,10 +7,9 @@ const PlayerPanel = (props: Props) => {
   const [avatar, setAvatar] = React.useState("");
 
   useEffect(() => {
-    if(props.player.name === "random") return setAvatar("");
+    if(props.player.name === "random") return;
     async function updatePlayer() {
       const res = await getPlayerAvatar(props.player.name);
-      console.log("player name", props.player.name);
       setAvatar(res);
     }
     updatePlayer();
